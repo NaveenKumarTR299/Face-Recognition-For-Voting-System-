@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Party Information</title>
+
+    <style>
+        
+        body {
+            margin:0;
+            font-family:Poppins;
+            text-align:center;
+            overflow-y:auto;
+
+            /* 🌄 Light background image */
+            background: linear-gradient(to right, rgba(255,255,255,0.85), rgba(255,255,255,0.7)),
+            url('https://images.unsplash.com/photo-1501785888041-af3ef285b470');
+
+            background-size: cover;
+            background-position: center;
+
+            /* 🎥 Smooth movement */
+            animation: floatBG 30s ease-in-out infinite;
+        }
+
+        @keyframes floatBG {
+            0% {background-position: center;}
+            25% {background-position: left center;}
+            50% {background-position: center top;}
+            75% {background-position: right center;}
+            100% {background-position: center;}
+        }
+
+        h1 {
+            margin-top: 40px;
+            color: #333;
+            text-shadow: 0 0 10px rgba(255,255,255,0.7);
+        }
+
+        /* 📦 Button container */
+        .box {
+            margin-top: 40px;
+        }
+
+        button {
+            width: 250px;
+            padding: 12px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+
+            background: linear-gradient(45deg, #ff512f, #dd2476);
+            color: white;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        /* 💎 Glass effect box */
+        .container {
+            display: inline-block;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>📚 Political Party Information</h1>
+
+<div class="container">
+
+    <div class="box">
+        <a href="/party/BJP"><button>🪷 BJP Info</button></a><br>
+        <a href="/party/INC"><button>✋ INC Info</button></a><br>
+        <a href="/party/BSP"><button>🐘 BSP Info</button></a><br>
+        <a href="/party/SS"><button>🏹 Shiv Sena Info</button></a><br>
+        <a href="/party/JDS"><button>🌾 JDS Info</button></a><br>
+    </div>
+<a href="/leader"><button>👤 View Leader</button></a>
+    <br>
+    <a href="/"><button>⬅ Back</button></a>
+
+</div>
+
+</body>
+</html>

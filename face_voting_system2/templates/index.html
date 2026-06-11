@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🗳️ Face Recognition Voting System</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="index">
+    <!-- 🏛️ Background Image -->
+    <div id="voting-bg" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(30, 30, 60, 0.4), rgba(50, 50, 90, 0.4)),
+                    url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+        background-attachment: fixed;
+        z-index: -4;
+    "></div>
+
+    <!-- ✨ Particle Effects with Voting Symbols -->
+    <div class="particles">
+        <div class="particle" style="background: rgba(255, 255, 255, 0.8);">🗳️</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.6);">⚖️</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.7);">🏛️</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.5);">📊</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.9);">🗳️</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.4);">⚡</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.6);">🔒</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.8);">🛡️</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.5);">📈</div>
+        <div class="particle" style="background: rgba(255, 255, 255, 0.7);">🎯</div>
+    </div>
+
+    <!-- 🌈 Enhanced Animated Gradient Overlay -->
+    <div id="animated-bg" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(-45deg,
+            rgba(102, 126, 234, 0.3),
+            rgba(118, 75, 162, 0.4),
+            rgba(240, 147, 251, 0.3),
+            rgba(245, 87, 108, 0.4),
+            rgba(79, 172, 254, 0.3),
+            rgba(0, 242, 254, 0.4)
+        );
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        z-index: -3;
+    "></div>
+
+    <!-- 🏛️ Floating Democratic Symbols -->
+    <div id="democracy-symbols" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -2;
+    ">
+        <div style="position: absolute; top: 10%; left: 5%; font-size: 60px; animation: libertyFloat 12s ease-in-out infinite; opacity: 0.1;">🔔</div>
+        <div style="position: absolute; top: 20%; right: 8%; font-size: 50px; animation: justiceFloat 15s ease-in-out infinite reverse; opacity: 0.15;">⚖️</div>
+        <div style="position: absolute; bottom: 15%; left: 10%; font-size: 70px; animation: parliamentFloat 18s ease-in-out infinite; opacity: 0.12;">🏛️</div>
+        <div style="position: absolute; bottom: 25%; right: 5%; font-size: 55px; animation: voteBoxFloat 14s ease-in-out infinite reverse; opacity: 0.13;">🗳️</div>
+        <div style="position: absolute; top: 60%; left: 70%; font-size: 45px; animation: scrollFloat 16s ease-in-out infinite; opacity: 0.11;">📜</div>
+    </div>
+
+    <!-- 🎈 Enhanced Floating Blobs -->
+    <div id="blob-1" style="
+        position: fixed;
+        top: 15%;
+        left: 8%;
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: democraticFloat 8s ease-in-out infinite;
+        z-index: -2;
+    "></div>
+
+    <div id="blob-2" style="
+        position: fixed;
+        bottom: 15%;
+        right: 8%;
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+        border-radius: 50%;
+        filter: blur(50px);
+        animation: patrioticFloat 10s ease-in-out infinite reverse;
+        z-index: -2;
+    "></div>
+
+    <div id="blob-3" style="
+        position: fixed;
+        top: 60%;
+        left: 60%;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+        border-radius: 50%;
+        filter: blur(45px);
+        animation: freedomFloat 12s ease-in-out infinite;
+        z-index: -2;
+    "></div>
+
+    <!-- 🌐 Google Translate -->
+    <div id="google_translate_element" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    "></div>
+
+    <div class="container">
+        <div class="card slide-in glow-effect">
+            <!-- 🎨 Enhanced Title Section -->
+            <div class="title-section">
+                <div class="title-border">
+                    <div class="title-content">
+                        <h1>🗳️ Face Recognition Voting System</h1>
+                        <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 14px;">Secure • Transparent • Accessible</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🔘 Enhanced Buttons -->
+            <div class="btn-container">
+                <div class="btn-wrapper">
+                    <a href="/register">
+                        <button>👤 Register Voter</button>
+                    </a>
+                </div>
+
+                <div class="btn-wrapper">
+                    <a href="/login">
+                        <button>🔐 Login & Vote</button>
+                    </a>
+                </div>
+
+                <div class="btn-wrapper">
+                    <a href="/admin">
+                        <button>📊 Admin Dashboard</button>
+                    </a>
+                </div>
+
+                <div class="btn-wrapper">
+                    <button id="read-button">📢 Read Info</button>
+                </div>
+            </div>
+
+            <!-- ✨ Decorative Elements -->
+            <div style="margin-top: 30px; opacity: 0.7;">
+                <div style="display: inline-block; margin: 0 10px;">
+                    <span style="font-size: 24px;">🔒</span>
+                </div>
+                <div style="display: inline-block; margin: 0 10px;">
+                    <span style="font-size: 24px;">🛡️</span>
+                </div>
+                <div style="display: inline-block; margin: 0 10px;">
+                    <span style="font-size: 24px;">⚡</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 🌐 Google Translate Script -->
+    <script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'en',
+                includedLanguages: 'en,hi,kn,te',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            },
+            'google_translate_element'
+        );
+    }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+    let currentSpeech = null;
+
+    function speakText(text) {
+        if (!text || text.length < 3) return;
+        window.speechSynthesis.cancel();
+        currentSpeech = new SpeechSynthesisUtterance(text);
+
+        let langSelector = document.querySelector('.goog-te-combo');
+        if (langSelector) {
+            let lang = langSelector.value;
+            if (lang === 'hi') currentSpeech.lang = 'hi-IN';
+            else if (lang === 'kn') currentSpeech.lang = 'kn-IN';
+            else if (lang === 'te') currentSpeech.lang = 'te-IN';
+            else currentSpeech.lang = 'en-US';
+        } else {
+            currentSpeech.lang = 'en-US';
+        }
+
+        currentSpeech.rate = 0.9;
+        currentSpeech.pitch = 1.0;
+        currentSpeech.volume = 0.7;
+
+        window.speechSynthesis.speak(currentSpeech);
+    }
+
+    document.getElementById('read-button').addEventListener('click', function() {
+        const titleText = document.querySelector('.title-content')?.innerText || '';
+        const infoText = document.querySelector('.title-content p')?.innerText || '';
+        speakText(titleText + ' ' + infoText);
+    });
+
+    // Add click sound effects
+    document.addEventListener("click", function(e) {
+        if (e.target.tagName === 'BUTTON') {
+            // Create a subtle click sound effect (visual feedback)
+            e.target.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                e.target.style.transform = '';
+            }, 150);
+        }
+    });
+
+    // Add loading animation for buttons
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.innerHTML = '⏳ ' + this.innerHTML;
+            this.disabled = true;
+
+            // Re-enable after a short delay (in real app, this would be after navigation)
+            setTimeout(() => {
+                this.disabled = false;
+                this.innerHTML = this.innerHTML.replace('⏳ ', '');
+            }, 1000);
+        });
+    });
+    </script>
+
+    <!-- 🎵 Background Music Toggle (Optional) -->
+    <div style="
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 1000;
+    ">
+        <button id="music-toggle" style="
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            font-size: 20px;
+        " title="Toggle Background Music">🎵</button>
+    </div>
+
+    <script>
+    // Music toggle functionality (placeholder for actual music)
+    document.getElementById('music-toggle').addEventListener('click', function() {
+        this.innerHTML = this.innerHTML === '🎵' ? '🔇' : '🎵';
+        // In a real implementation, you would control audio playback here
+    });
+    </script>
+</body>
+</html>

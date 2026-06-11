@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDS History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color:aqua;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color:black;
+        }
+        h2 {
+            color:orangered;
+        }
+        section {
+            background:#ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+        ul {
+            margin-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid blue;
+        }
+        th {
+            background-color: #27ae60;
+            color: white;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+         #google_translate_element {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+    </style>
+     <button onclick="speakPage()">🔊 Read Page</button>
+<button onclick="stopSpeech()">⏹ Stop</button>
+</head>
+<body><script>
+let currentSpeech = null;
+
+function speakPage() {
+
+    speechSynthesis.cancel();
+
+    let text = document.body.innerText;
+    currentSpeech = new SpeechSynthesisUtterance(text);
+
+    let lang = document.querySelector('.goog-te-combo')?.value;
+
+    let voices = speechSynthesis.getVoices();
+
+    // 🔥 SELECT VOICE BASED ON LANGUAGE
+    let selectedVoice = null;
+
+    if (lang === 'hi') {
+        currentSpeech.lang = 'hi-IN';
+        selectedVoice = voices.find(v => v.lang.includes('hi'));
+    }
+    else if (lang === 'kn') {
+        currentSpeech.lang = 'kn-IN';
+        selectedVoice = voices.find(v => v.lang.includes('kn'));
+    }
+    else if (lang === 'te') {
+        currentSpeech.lang = 'te-IN';
+        selectedVoice = voices.find(v => v.lang.includes('te'));
+    }
+    else {
+        currentSpeech.lang = 'en-US';
+        selectedVoice = voices.find(v => v.lang.includes('en') && v.name.toLowerCase().includes('female'));
+    }
+
+    // fallback if not found
+    if (!selectedVoice) {
+        selectedVoice = voices[0];
+    }
+
+    currentSpeech.voice = selectedVoice;
+
+    currentSpeech.rate = 1;
+    currentSpeech.pitch = 1.2;
+
+    speechSynthesis.speak(currentSpeech);
+}
+
+// load voices properly
+speechSynthesis.onvoiceschanged = () => {
+    speechSynthesis.getVoices();
+};
+
+function stopSpeech() {
+    speechSynthesis.cancel();
+}
+</script>
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,kn,te',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,kn,te',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- 🌐 GOOGLE TRANSLATE -->
+<div id="google_translate_element"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,kn,te',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+    <h1>History of Janata Dal (Secular) – JDS</h1>
+
+    <section>
+        <h2>Formation (1999)
+            </h2>
+        <p>JDS was formed in 1999 after splitting from Janata Dal. 
+        It was founded by H. D. Deve Gowda.</p>
+    </section>
+
+    <section>
+        <h2>Leadership</h2>
+        <ul>
+            <li>H. D. Deve Gowda – Founder</li>
+            <li>H. D. Kumaraswamy – Key leader</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Political Growth</h2>
+        <ul>
+            <li>Strong presence in Karnataka</li>
+            <li>Support from farmers and rural population</li>
+            <li>2006: Coalition with BJP</li>
+            <li>2018: Coalition with Congress</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Alliances</h2>
+        <p>JDS often forms coalition governments and plays a kingmaker role.</p>
+    </section>
+
+    <section>
+        <h2>Ideology</h2>
+        <ul>
+            <li>Secularism</li>
+            <li>Farmers welfare</li>
+            <li>Rural development</li>
+            <li>Regional focus</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Summary Timeline</h2>
+        <table>
+            <tr>
+                <th>Year</th>
+                <th>Event</th>
+            </tr>
+            <tr>
+                <td>1999</td>
+                <td>JDS formed</td>
+            </tr>
+            <tr>
+                <td>2006</td>
+                <td>Coalition with BJP</td>
+            </tr>
+            <tr>
+                <td>2018</td>
+                <td>Coalition with Congress</td>
+            </tr>
+            <tr>
+                <td>Present</td>
+                <td>Regional party in Karnataka</td>
+            </tr>
+        </table>
+    </section>
+
+</body>
+</html>

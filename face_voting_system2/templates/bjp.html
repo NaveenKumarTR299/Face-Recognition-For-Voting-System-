@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History of BJP</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: white;
+
+            /* 🌄 Attractive background image with movement */
+            background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.1)),
+            url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da');
+            background-size: cover;
+            background-position: center;
+
+            /* 🔥 Smooth pan animation */
+            animation: bgPan 25s ease-in-out infinite;
+        }
+
+        @keyframes bgPan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        h2 {
+            color: #ffeb3b;
+            border-bottom: 2px solid #ffeb3b;
+            padding-bottom: 5px;
+        }
+
+        p {
+            color: white;
+        }
+
+        section {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        th {
+            background-color: #ff5722;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Translate box styling */
+        #google_translate_element {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        th {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Translate box styling */
+        #google_translate_element {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+    </style>
+    <button onclick="speakPage()">🔊 Read Page</button>
+<button onclick="stopSpeech()">⏹ Stop</button>
+</head>
+
+<body>
+   <script>
+let currentSpeech = null;
+
+function speakPage() {
+
+    speechSynthesis.cancel();
+
+    let text = document.body.innerText;
+    currentSpeech = new SpeechSynthesisUtterance(text);
+
+    let lang = document.querySelector('.goog-te-combo')?.value;
+
+    let voices = speechSynthesis.getVoices();
+
+    // 🔥 SELECT VOICE BASED ON LANGUAGE
+    let selectedVoice = null;
+
+    if (lang === 'hi') {
+        currentSpeech.lang = 'hi-IN';
+        selectedVoice = voices.find(v => v.lang.includes('hi'));
+    }
+    else if (lang === 'kn') {
+        currentSpeech.lang = 'kn-IN';
+        selectedVoice = voices.find(v => v.lang.includes('kn'));
+    }
+    else if (lang === 'te') {
+        currentSpeech.lang = 'te-IN';
+        selectedVoice = voices.find(v => v.lang.includes('te'));
+    }
+    else {
+        currentSpeech.lang = 'en-US';
+        selectedVoice = voices.find(v => v.lang.includes('en') && v.name.toLowerCase().includes('female'));
+    }
+
+    // fallback if not found
+    if (!selectedVoice) {
+        selectedVoice = voices[0];
+    }
+
+    currentSpeech.voice = selectedVoice;
+
+    currentSpeech.rate = 1;
+    currentSpeech.pitch = 1.2;
+
+    speechSynthesis.speak(currentSpeech);
+}
+
+// load voices properly
+speechSynthesis.onvoiceschanged = () => {
+    speechSynthesis.getVoices();
+};
+
+function stopSpeech() {
+    speechSynthesis.cancel();
+}
+</script>
+    <div id="google_translate_element"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,kn,te',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <div id="google_translate_element"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,kn,te',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- 🌐 GOOGLE TRANSLATE -->
+<div id="google_translate_element"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en',
+            includedLanguages: 'en,hi,kn,te',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        },
+        'google_translate_element'
+    );
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<h1>History of Bharatiya Janata Party (BJP)</h1>
+
+<section>
+    <h2>Origins (Before BJP Formation)</h2>
+    <p>The roots of BJP go back to 1951 with the formation of Bharatiya Jana Sangh by Syama Prasad Mukherjee. It was inspired by RSS ideology focusing on cultural nationalism.</p>
+</section>
+
+<section>
+    <h2>1977 – Janata Party Phase</h2>
+    <p>After the Emergency (1975–77), several opposition parties merged to form the Janata Party, which came to power in 1977. However, internal conflicts led to its collapse.</p>
+</section>
+
+<section>
+    <h2>1980 – Formation of BJP</h2>
+    <p>BJP was founded in 1980 by Atal Bihari Vajpayee and Lal Krishna Advani. Initially, it followed Gandhian Socialism.</p>
+</section>
+
+<section>
+    <h2>Rise to Power (1990s)</h2>
+    <ul>
+        <li>Ram Janmabhoomi Movement boosted popularity</li>
+        <li>1996: First government (short-lived)</li>
+        <li>1998: Stable government under Vajpayee</li>
+        <li>Pokhran-II nuclear tests</li>
+    </ul>
+</section>
+
+<section>
+    <h2>2004–2014: Opposition Phase</h2>
+    <p>BJP lost power in 2004. Congress-led UPA ruled India while BJP rebuilt its strategy.</p>
+</section>
+
+<section>
+    <h2>2014–Present: Modi Era</h2>
+    <ul>
+        <li>2014: Narendra Modi led BJP to majority</li>
+        <li>2019: Re-elected with bigger majority</li>
+        <li>Major policies: GST, Demonetization, Article 370 removal</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Ideology of BJP</h2>
+    <ul>
+        <li>Cultural nationalism (Hindutva)</li>
+        <li>Strong central government</li>
+        <li>Economic development</li>
+        <li>National security</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Summary Timeline</h2>
+    <table>
+        <tr>
+            <th>Year</th>
+            <th>Event</th>
+        </tr>
+        <tr><td>1951</td><td>Jana Sangh formed</td></tr>
+        <tr><td>1977</td><td>Joined Janata Party</td></tr>
+        <tr><td>1980</td><td>BJP formed</td></tr>
+        <tr><td>1998</td><td>First stable government</td></tr>
+        <tr><td>2004</td><td>Lost power</td></tr>
+        <tr><td>2014</td><td>Modi victory</td></tr>
+        <tr><td>2019</td><td>Re-elected</td></tr>
+    </table>
+</section>
+
+</body>
+</html>

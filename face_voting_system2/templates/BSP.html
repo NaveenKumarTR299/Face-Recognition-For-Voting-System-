@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSP History</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: aqua;
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #1f3a93;
+}
+
+h2 {
+    color: #2980b9;
+}
+
+section {
+    background: gold;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #2980b9;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+#google_translate_element {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.voice-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🌐 TRANSLATOR -->
+<div id="google_translate_element"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,kn,te'
+    }, 'google_translate_element');
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- 🔊 VOICE BUTTONS -->
+<div class="voice-box">
+    <button onclick="readPage()">🔊 Read Page</button>
+    <button onclick="stopAudio()">⏹ Stop</button>
+</div>
+
+<audio id="audioPlayer" style="display:none;"></audio>
+
+<!-- 🔊 SCRIPT -->
+<script>
+function readPage() {
+
+    let content = document.getElementById("content");
+
+    if (!content) {
+        alert("Content not found!");
+        return;
+    }
+
+    let text = content.innerText;
+
+    let lang = document.querySelector('.goog-te-combo')?.value || 'en';
+
+    if (lang === 'hi') lang = 'hi';
+    else if (lang === 'kn') lang = 'kn';
+    else if (lang === 'te') lang = 'te';
+    else lang = 'en';
+
+    let audio = document.getElementById("audioPlayer");
+
+    audio.src = `/speak?text=${encodeURIComponent(text)}&lang=${lang}`;
+    audio.play();
+}
+
+function stopAudio() {
+    let audio = document.getElementById("audioPlayer");
+    audio.pause();
+    audio.currentTime = 0;
+}
+</script>
+
+<!-- ✅ CONTENT ONLY (WILL BE READ) -->
+<div id="content">
+
+<h1>History of Bahujan Samaj Party (BSP)</h1>
+
+<section>
+<h2>Formation (1984)</h2>
+<p>BSP was founded in 1984 by Kanshi Ram. 
+The party focuses on empowering marginalized communities.</p>
+</section>
+
+<section>
+<h2>Leadership</h2>
+<ul>
+<li>Kanshi Ram – Founder</li>
+<li>Mayawati – Key leader</li>
+</ul>
+</section>
+
+<section>
+<h2>Political Growth</h2>
+<ul>
+<li>Strong presence in Uttar Pradesh</li>
+<li>Focus on Dalit and backward communities</li>
+<li>2007: Majority government in UP</li>
+</ul>
+</section>
+
+<section>
+<h2>Ideology</h2>
+<ul>
+<li>Social justice</li>
+<li>Equality</li>
+<li>Empowerment of marginalized communities</li>
+<li>Anti-caste discrimination</li>
+</ul>
+</section>
+
+<section>
+<h2>Summary Timeline</h2>
+<table>
+<tr><th>Year</th><th>Event</th></tr>
+<tr><td>1984</td><td>BSP formed</td></tr>
+<tr><td>1995</td><td>Mayawati became CM</td></tr>
+<tr><td>2007</td><td>Majority government in UP</td></tr>
+<tr><td>Present</td><td>Active political party</td></tr>
+</table>
+</section>
+
+</div>
+<body style="
+margin:0;
+font-family:Poppins;
+overflow-y:auto;
+
+/* 🌄 Light attractive image */
+background: linear-gradient(to right, rgba(255,255,255,0.85), rgba(255,255,255,0.7)),
+url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d');
+background-size: cover;
+background-position: center;
+
+/* 🔥 Smooth zoom animation (very attractive) */
+animation: bgZoom 20s ease-in-out infinite;
+">
+<style>
+@keyframes bgZoom {
+    0% {
+        background-size: 100%;
+        background-position: center;
+    }
+    50% {
+        background-size: 110%;
+        background-position: center;
+    }
+    100% {
+        background-size: 100%;
+        background-position: center;
+    }
+}
+</style>
+</body>
+</html>

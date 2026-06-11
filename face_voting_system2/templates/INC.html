@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INC History</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+    color: white;
+
+    /* 🌄 Attractive background image with movement */
+    background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.1)),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4');
+    background-size: cover;
+    background-position: center;
+
+    /* 🔥 Smooth pan animation */
+    animation: bgPan 25s ease-in-out infinite;
+}
+
+@keyframes bgPan {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.7);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+h2 {
+    color: #ffeb3b;
+    border-bottom: 2px solid #ffeb3b;
+    padding-bottom: 5px;
+}
+
+p {
+    color: white;
+}
+
+section {
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+section:hover {
+    transform: translateY(-5px);
+}
+
+ul {
+    margin-left: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table, th, td {
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+th {
+    background-color: #ff5722;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: rgba(255,255,255,0.05);
+}
+
+#google_translate_element {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ff512f, #dd2476);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🌐 TRANSLATOR -->
+<div id="google_translate_element"></div>
+
+<script>
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,kn,te'
+    }, 'google_translate_element');
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- 🔊 VOICE BUTTONS -->
+<div class="buttons">
+    <button onclick="speakPage()">🔊 Read</button>
+    <button onclick="stopSpeech()">⏹ Stop</button>
+</div>
+
+<h1>History of Indian National Congress (INC)</h1>
+
+<section>
+<h2>Formation (1885)</h2>
+<p>INC was founded in 1885 by A.O. Hume. First session in Mumbai.</p>
+</section>
+
+<section>
+<h2>Freedom Struggle</h2>
+<ul>
+<li>Non-Cooperation Movement</li>
+<li>Civil Disobedience</li>
+<li>Quit India Movement</li>
+</ul>
+</section>
+
+<section>
+<h2>Post Independence</h2>
+<p>Nehru focused on democracy and development.</p>
+</section>
+
+<section>
+<h2>Economic Reforms</h2>
+<p>1991 reforms led by Manmohan Singh.</p>
+</section>
+
+<section>
+<h2>Summary Timeline</h2>
+<table border="1" width="100%">
+<tr><th>Year</th><th>Event</th></tr>
+<tr><td>1885</td><td>INC formed</td></tr>
+<tr><td>1947</td><td>Independence</td></tr>
+<tr><td>1991</td><td>Reforms</td></tr>
+</table>
+</section>
+
+<!-- 🔊 VOICE SCRIPT -->
+<script>
+let speech;
+
+function speakPage() {
+
+    speechSynthesis.cancel();
+
+    let text = document.body.innerText;
+
+    speech = new SpeechSynthesisUtterance(text);
+
+    let lang = document.querySelector('.goog-te-combo')?.value;
+
+    let voices = speechSynthesis.getVoices();
+
+    if (lang === 'hi') {
+        speech.lang = 'hi-IN';
+        speech.voice = voices.find(v => v.lang.includes('hi')) || voices[0];
+    }
+    else if (lang === 'kn') {
+        speech.lang = 'kn-IN';
+        speech.voice = voices.find(v => v.lang.includes('kn')) || voices[0];
+    }
+    else if (lang === 'te') {
+        speech.lang = 'te-IN';
+        speech.voice = voices.find(v => v.lang.includes('te')) || voices[0];
+    }
+    else {
+        speech.lang = 'en-US';
+        speech.voice = voices.find(v => v.name.toLowerCase().includes('female')) || voices[0];
+    }
+
+    speech.pitch = 1.2;
+
+    speechSynthesis.speak(speech);
+}
+
+function stopSpeech() {
+    speechSynthesis.cancel();
+}
+</script>
+
+</body>
+</html>

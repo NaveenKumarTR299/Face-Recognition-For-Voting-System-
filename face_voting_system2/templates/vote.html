@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Democratic Vote - Secure Voting System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Particle effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            pointer-events: none;
+            z-index: -1;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(60px); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+        }
+
+        .header-subtitle {
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .voting-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .party-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 2px solid transparent;
+            animation: slideUp 0.6s ease-out both;
+        }
+
+        .party-card:nth-child(1) { animation-delay: 0.1s; }
+        .party-card:nth-child(2) { animation-delay: 0.2s; }
+        .party-card:nth-child(3) { animation-delay: 0.3s; }
+        .party-card:nth-child(4) { animation-delay: 0.4s; }
+        .party-card:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .party-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .party-header {
+            padding: 30px 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .party-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            transition: opacity 0.3s;
+        }
+
+        .party-card:hover .party-header::before {
+            opacity: 0.2;
+        }
+
+        .party-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .party-card:hover .party-icon {
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .party-name {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .party-short {
+            font-size: 0.9em;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .party-body {
+            padding: 20px 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .party-description {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .vote-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .vote-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .vote-button:active {
+            transform: translateY(0);
+        }
+
+        /* Party-specific colors */
+        .bjp-card .party-header::before { background: linear-gradient(135deg, #ff8c00, #ffa500); }
+        .bjp-card .vote-button { background: linear-gradient(135deg, #ff8c00, #ffa500); box-shadow: 0 8px 15px rgba(255, 140, 0, 0.3); }
+        .bjp-card .vote-button:hover { box-shadow: 0 12px 25px rgba(255, 140, 0, 0.4); }
+        .bjp-card:hover { border-color: #ff8c00; }
+
+        .inc-card .party-header::before { background: linear-gradient(135deg, #1976d2, #42a5f5); }
+        .inc-card .vote-button { background: linear-gradient(135deg, #1976d2, #42a5f5); box-shadow: 0 8px 15px rgba(25, 118, 210, 0.3); }
+        .inc-card .vote-button:hover { box-shadow: 0 12px 25px rgba(25, 118, 210, 0.4); }
+        .inc-card:hover { border-color: #1976d2; }
+
+        .bsp-card .party-header::before { background: linear-gradient(135deg, #4caf50, #66bb6a); }
+        .bsp-card .vote-button { background: linear-gradient(135deg, #4caf50, #66bb6a); box-shadow: 0 8px 15px rgba(76, 175, 80, 0.3); }
+        .bsp-card .vote-button:hover { box-shadow: 0 12px 25px rgba(76, 175, 80, 0.4); }
+        .bsp-card:hover { border-color: #4caf50; }
+
+        .ss-card .party-header::before { background: linear-gradient(135deg, #d32f2f, #e53935); }
+        .ss-card .vote-button { background: linear-gradient(135deg, #d32f2f, #e53935); box-shadow: 0 8px 15px rgba(211, 47, 47, 0.3); }
+        .ss-card .vote-button:hover { box-shadow: 0 12px 25px rgba(211, 47, 47, 0.4); }
+        .ss-card:hover { border-color: #d32f2f; }
+
+        .jds-card .party-header::before { background: linear-gradient(135deg, #6f42c1, #7c3aed); }
+        .jds-card .vote-button { background: linear-gradient(135deg, #6f42c1, #7c3aed); box-shadow: 0 8px 15px rgba(111, 66, 193, 0.3); }
+        .jds-card .vote-button:hover { box-shadow: 0 12px 25px rgba(111, 66, 193, 0.4); }
+        .jds-card:hover { border-color: #6f42c1; }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .voting-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 15px 40px;
+            }
+
+            .party-card {
+                min-height: auto;
+            }
+        }
+
+        /* Accessibility */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .voting-grid a {
+            display: contents;
+        }
+
+        .party-card:focus-within {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Message Display Styles */
+        .message-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            max-width: 500px;
+            width: 90%;
+            animation: slideDownEnter 0.5s ease-out;
+        }
+
+        .message-box {
+            padding: 20px 25px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            animation: messageShow 0.5s ease-out;
+        }
+
+        .message-box.success {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-box.error {
+            background: linear-gradient(135deg, #f44336, #e53935);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes slideDownEnter {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes messageShow {
+            from {
+                opacity: 0;
+                scale: 0.95;
+            }
+            to {
+                opacity: 1;
+                scale: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Message Display -->
+    <div id="message-container" class="message-container" style="display: none;">
+        <div id="message-box" class="message-box"></div>
+    </div>
+
+    <div class="header">
+        <h1>🗳️ Democratic Voting System</h1>
+        <p>Select Your Preferred Party</p>
+        <div class="header-subtitle">
+            <span>✓ Secure • Anonymous • Democratic</span>
+        </div>
+    </div>
+
+    <div class="voting-grid">
+        <a href="/vote/BJP">
+            <button class="party-card bjp-card">
+                <div class="party-header">
+                    <span class="party-icon">🪷</span>
+                    <div class="party-name">Bharatiya Janata Party</div>
+                    <div class="party-short">BJP</div>
+                </div>
+                <div class="party-body">
+                    <p class="party-description">Serving with dedication and commitment to national development and prosperity.</p>
+                    <button class="vote-button">VOTE BJP</button>
+                </div>
+            </button>
+        </a>
+
+        <a href="/vote/INC">
+            <button class="party-card inc-card">
+                <div class="party-header">
+                    <span class="party-icon">✋</span>
+                    <div class="party-name">Indian National Congress</div>
+                    <div class="party-short">INC</div>
+                </div>
+                <div class="party-body">
+                    <p class="party-description">Championing inclusivity, diversity, and social welfare for all citizens.</p>
+                    <button class="vote-button">VOTE INC</button>
+                </div>
+            </button>
+        </a>
+
+        <a href="/vote/BSP">
+            <button class="party-card bsp-card">
+                <div class="party-header">
+                    <span class="party-icon">🐘</span>
+                    <div class="party-name">Bahujan Samaj Party</div>
+                    <div class="party-short">BSP</div>
+                </div>
+                <div class="party-body">
+                    <p class="party-description">Focused on social justice and empowerment of marginalized communities.</p>
+                    <button class="vote-button">VOTE BSP</button>
+                </div>
+            </button>
+        </a>
+
+        <a href="/vote/SS">
+            <button class="party-card ss-card">
+                <div class="party-header">
+                    <span class="party-icon">🏹</span>
+                    <div class="party-name">Shiv Sena</div>
+                    <div class="party-short">SS</div>
+                </div>
+                <div class="party-body">
+                    <p class="party-description">Regional pride and community-centric governance with strong leadership.</p>
+                    <button class="vote-button">VOTE SS</button>
+                </div>
+            </button>
+        </a>
+
+        <a href="/vote/JDS">
+            <button class="party-card jds-card">
+                <div class="party-header">
+                    <span class="party-icon">🌾</span>
+                    <div class="party-name">Janata Dal (Secular)</div>
+                    <div class="party-short">JDS</div>
+                </div>
+                <div class="party-body">
+                    <p class="party-description">Supporting farmer welfare and agrarian development for rural prosperity.</p>
+                    <button class="vote-button">VOTE JDS</button>
+                </div>
+            </button>
+        </a>
+    </div>
+
+    <div class="footer">
+        <a href="/logout" class="logout-btn">🚪 Logout & Exit</a>
+    </div>
+
+    <script>
+        let currentSpeech = null;
+
+        function showMessage(message, type = 'success') {
+            const messageContainer = document.getElementById('message-container');
+            const messageBox = document.getElementById('message-box');
+
+            // Remove previous classes
+            messageBox.classList.remove('success', 'error');
+            
+            // Add appropriate class
+            messageBox.classList.add(type);
+            
+            // Set message text
+            messageBox.textContent = message;
+            
+            // Show container
+            messageContainer.style.display = 'block';
+
+            // Auto hide after 4 seconds
+            setTimeout(() => {
+                messageContainer.style.display = 'none';
+            }, 4000);
+        }
+
+        function speakMessage(message) {
+            // Stop any existing speech
+            window.speechSynthesis.cancel();
+
+            // Create new speech utterance
+            currentSpeech = new SpeechSynthesisUtterance(message);
+
+            // Configure for natural, clear voice
+            currentSpeech.rate = 0.9;
+            currentSpeech.pitch = 1.0;
+            currentSpeech.volume = 1.0;
+
+            // Try to use a natural female voice if available
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length > 0) {
+                // Prefer female voices for natural sound
+                const femaleVoice = voices.find(v => v.name.includes('Female') || v.name.includes('female'));
+                if (femaleVoice) {
+                    currentSpeech.voice = femaleVoice;
+                } else if (voices.length > 1) {
+                    currentSpeech.voice = voices[1];
+                }
+            }
+
+            window.speechSynthesis.speak(currentSpeech);
+        }
+
+        // Override vote button links to show voice feedback
+        document.querySelectorAll('.vote-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Get the party name from the card
+                const partyName = this.parentElement.parentElement.querySelector('.party-name').innerText;
+
+                // Check if user has already voted
+                const hasVoted = localStorage.getItem('userHasVoted');
+
+                if (hasVoted) {
+                    // Already voted - show message
+                    const alreadyVotedMsg = 'You are already voted. You cannot vote again.';
+                    showMessage('❌ ' + alreadyVotedMsg, 'error');
+                    speakMessage(alreadyVotedMsg);
+                    
+                    // Visual feedback
+                    this.style.opacity = '0.5';
+                    this.style.cursor = 'not-allowed';
+                } else {
+                    // First time voting - show success message
+                    const successMsg = `You have voted successfully for ${partyName}. Thank you for voting.`;
+                    showMessage('✅ Vote Successful for ' + partyName, 'success');
+                    speakMessage(successMsg);
+                    
+                    // Mark as voted in localStorage
+                    localStorage.setItem('userHasVoted', 'true');
+                    localStorage.setItem('votedParty', partyName);
+
+                    // Visual feedback - disable all vote buttons
+                    document.querySelectorAll('.vote-button').forEach(b => {
+                        b.style.opacity = '0.5';
+                        b.style.cursor = 'not-allowed';
+                        b.disabled = true;
+                    });
+
+                    // After 3 seconds, redirect to confirmation page (optional)
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
+                }
+            });
+        });
+
+        // Disable vote buttons if user has already voted when page loads
+        window.addEventListener('load', function() {
+            const hasVoted = localStorage.getItem('userHasVoted');
+            if (hasVoted) {
+                const votedParty = localStorage.getItem('votedParty');
+                showMessage('✅ You have already voted for ' + votedParty, 'success');
+                document.querySelectorAll('.vote-button').forEach(btn => {
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                    btn.disabled = true;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

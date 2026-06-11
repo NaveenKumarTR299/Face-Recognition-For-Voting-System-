@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Admin Dashboard - Face Voting System</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* 🌟 Enhanced Background with Multiple Layers */
+        .bg-layer-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: -4;
+            animation: gradientShift 20s ease infinite;
+        }
+
+        .bg-layer-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: -3;
+            animation: bgFloat 30s ease-in-out infinite;
+        }
+
+        .bg-layer-3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -2;
+            animation: particleFloat 25s ease-in-out infinite;
+        }
+
+        /* 🎭 Floating Particles */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: particleMove 20s linear infinite;
+        }
+
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 6s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 8s; }
+        .particle:nth-child(6) { width: 7px; height: 7px; left: 60%; animation-delay: 10s; }
+        .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 12s; }
+        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 14s; }
+        .particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 16s; }
+        .particle:nth-child(10) { width: 6px; height: 6px; left: 95%; animation-delay: 18s; }
+
+        /* 🎨 Animations */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(1deg); }
+            50% { transform: scale(0.95) rotate(-1deg); }
+            75% { transform: scale(1.02) rotate(0.5deg); }
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes particleMove {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 📊 Dashboard Container */
+        .dashboard-container {
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: #e0e0e0;
+        }
+
+        /* 📈 Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1.2s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-card h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        /* 📋 Data Table */
+        .table-section {
+            margin-bottom: 40px;
+        }
+
+        .table-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1.4s ease-out;
+            overflow-x: auto;
+        }
+
+        .table-card h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* 🔥 Enhanced Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .results-table th {
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .results-table td {
+            padding: 15px;
+            font-size: 1rem;
+            color: white;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .results-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .results-table tr {
+            transition: all 0.3s ease;
+        }
+
+        .results-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .vote-count {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #4ade80;
+        }
+
+        /* 🎯 Action Buttons */
+        .actions-section {
+            text-align: center;
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* 📱 Responsive Design */
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .table-card {
+                padding: 20px;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ✨ Additional Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 🎨 Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 🌟 Background Layers -->
+    <div class="bg-layer-1"></div>
+    <div class="bg-layer-2"></div>
+    <div class="bg-layer-3"></div>
+
+    <!-- ✨ Floating Particles -->
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- 📊 Header -->
+        <div class="header">
+            <h1>📊 Admin Dashboard</h1>
+            <p>Real-time Voting Analytics & Management</p>
+        </div>
+
+        <!-- 📈 Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3>📊 Vote Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="voteChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>📈 Voting Trends</h3>
+                <div class="chart-container">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📋 Data Table -->
+        <div class="table-section">
+            <div class="table-card">
+                <h3>📋 Detailed Results</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>🏛️ Party</th>
+                            <th>🗳️ Votes</th>
+                            <th>📊 Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        {% for r in results %}
+                        <tr>
+                            <td>{{ r[0] }}</td>
+                            <td class="vote-count">{{ r[1] }}</td>
+                            <td id="percentage-{{ loop.index }}">Calculating...</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 🎯 Actions -->
+        <div class="actions-section">
+            <a href="/logout" class="action-btn" id="logoutBtn">
+                🚪 Logout
+            </a>
+            <a href="/" class="action-btn">
+                🏠 Back to Home
+            </a>
+            <a href="/information" class="action-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);">
+                ℹ️ Party Information
+            </a>
+        </div>
+
+        <!-- 📚 Party Information Section -->
+        <div class="info-section" style="margin-top: 60px; animation: fadeInUp 1.8s ease-out;">
+            <div class="info-header" style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem; background: linear-gradient(45deg, #fff, #f0f0f0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px;">📚 Political Party Information</h2>
+                <p style="font-size: 1.1rem; opacity: 0.9; color: #e0e0e0;">Learn more about participating parties</p>
+            </div>
+
+            <div class="info-container" style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                margin-bottom: 40px;
+            ">
+                <div class="info-card" style="
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.3rem;">🪷 BJP</h3>
+                    <p style="color: #e0e0e0; font-size: 0.95rem; margin-bottom: 15px;">Bharatiya Janata Party</p>
+                    <a href="/party/BJP" style="
+                        display: inline-block;
+                        padding: 10px 25px;
+                        background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(255, 107, 105, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">More Info</a>
+                </div>
+
+                <div class="info-card" style="
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.3rem;">✋ INC</h3>
+                    <p style="color: #e0e0e0; font-size: 0.95rem; margin-bottom: 15px;">Indian National Congress</p>
+                    <a href="/party/INC" style="
+                        display: inline-block;
+                        padding: 10px 25px;
+                        background: linear-gradient(135deg, #1F77D2 0%, #0055CC 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(31, 119, 210, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">More Info</a>
+                </div>
+
+                <div class="info-card" style="
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.3rem;">🐘 BSP</h3>
+                    <p style="color: #e0e0e0; font-size: 0.95rem; margin-bottom: 15px;">Bahujan Samaj Party</p>
+                    <a href="/party/BSP" style="
+                        display: inline-block;
+                        padding: 10px 25px;
+                        background: linear-gradient(135deg, #2FA84F 0%, #1B7A3A 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(47, 168, 79, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">More Info</a>
+                </div>
+
+                <div class="info-card" style="
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.3rem;">🏹 Shiv Sena</h3>
+                    <p style="color: #e0e0e0; font-size: 0.95rem; margin-bottom: 15px;">Shiv Sena</p>
+                    <a href="/party/SS" style="
+                        display: inline-block;
+                        padding: 10px 25px;
+                        background: linear-gradient(135deg, #DC143C 0%, #A0123C 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(220, 20, 60, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">More Info</a>
+                </div>
+
+                <div class="info-card" style="
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.3rem;">🌾 JDS</h3>
+                    <p style="color: #e0e0e0; font-size: 0.95rem; margin-bottom: 15px;">Janata Dal (Secular)</p>
+                    <a href="/party/JDS" style="
+                        display: inline-block;
+                        padding: 10px 25px;
+                        background: linear-gradient(135deg, #8B7355 0%, #6B4423 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(139, 115, 85, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">More Info</a>
+                </div>
+
+                <div class="info-card" style="
+                    background: rgba(255, 255, 255, 0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <h3 style="color: white; margin-bottom: 15px; font-size: 1.3rem;">👤 Leaders</h3>
+                    <p style="color: #e0e0e0; font-size: 0.95rem; margin-bottom: 15px;">View party leaders</p>
+                    <a href="/leader" style="
+                        display: inline-block;
+                        padding: 10px 25px;
+                        background: linear-gradient(135deg, #9945FF 0%, #7B2CBF 100%);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 10px 25px rgba(153, 69, 255, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">View Leaders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 📊 Chart.js Implementation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data - in real app, this would come from your backend
+            const voteData = {
+                labels: [
+                    {% for r in results %}
+                        '{{ r[0] }}'{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Votes',
+                    data: [
+                        {% for r in results %}
+                            {{ r[1] }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 205, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+                        'rgba(255, 159, 64, 0.8)',
+                        'rgba(199, 199, 199, 0.8)',
+                        'rgba(83, 102, 255, 0.8)',
+                        'rgba(255, 99, 255, 0.8)',
+                        'rgba(99, 255, 132, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(199, 199, 199, 1)',
+                        'rgba(83, 102, 255, 1)',
+                        'rgba(255, 99, 255, 1)',
+                        'rgba(99, 255, 132, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            };
+
+            // Bar Chart Configuration
+            const barConfig = {
+                type: 'bar',
+                data: voteData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#fff',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#fff',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            };
+
+            // Doughnut Chart Configuration
+            const doughnutConfig = {
+                type: 'doughnut',
+                data: voteData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#fff',
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            cornerRadius: 8
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart',
+                        animateRotate: true,
+                        animateScale: true
+                    }
+                }
+            };
+
+            // Initialize Charts
+            const barChart = new Chart(
+                document.getElementById('voteChart'),
+                barConfig
+            );
+
+            const trendChart = new Chart(
+                document.getElementById('trendChart'),
+                doughnutConfig
+            );
+
+            // Calculate and display percentages
+            function calculatePercentages() {
+                const totalVotes = voteData.datasets[0].data.reduce((sum, votes) => sum + votes, 0);
+                const rows = document.querySelectorAll('#resultsBody tr');
+
+                rows.forEach((row, index) => {
+                    const votes = voteData.datasets[0].data[index];
+                    const percentage = totalVotes > 0 ? ((votes / totalVotes) * 100).toFixed(1) : 0;
+                    const percentageCell = row.querySelector(`#percentage-${index + 1}`);
+                    if (percentageCell) {
+                        percentageCell.textContent = `${percentage}%`;
+                        percentageCell.style.color = '#4ade80';
+                        percentageCell.style.fontWeight = '700';
+                    }
+                });
+            }
+
+            // Calculate percentages on load
+            calculatePercentages();
+
+            // Add click animation to logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.innerHTML = '<span class="loading"></span> Logging out...';
+
+                setTimeout(() => {
+                    window.location.href = '/logout';
+                }, 1500);
+            });
+
+            // Add hover effects to table rows
+            const tableRows = document.querySelectorAll('.results-table tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe chart cards and table
+            document.querySelectorAll('.chart-card, .table-card, .actions-section').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
